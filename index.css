@@ -42,3 +42,16 @@
 .left   { transform: rotateY(-90deg) translateZ(50px); }
 .top    { transform: rotateX( 90deg) translateZ(50px); }
 .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+#tracker span {
+  margin: 0 2px;
+  font-size: 1.2em;
+  transition: all 0.2s ease;
+}
+
+#tracker span.highlight {
+  text-decoration: underline;
+  font-weight: bold;
+  color: red;
+}
+

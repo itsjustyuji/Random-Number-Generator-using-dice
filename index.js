@@ -1,7 +1,7 @@
 const dropdown = document.getElementById('dice');
 const result = document.getElementById('here');
 const tracker = document.getElementById('tracker'); // tracker div
-let rolledNumbers = ""; // string to store concatenated numbers
+let rolledNumbers = []; // store rolled numbers as an array instead of string
 
 dropdown.addEventListener('change', function () {
   const selectedValue = this.value;
@@ -31,11 +31,6 @@ dropdown.addEventListener('change', function () {
   scene.appendChild(cube);
   result.appendChild(scene);
 
-  // remove cube on click
-  scene.addEventListener("click", () => {
-    scene.remove();
-  });
-
   // reset first
   cube.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
@@ -54,17 +49,46 @@ dropdown.addEventListener('change', function () {
 
       // place rolled number only on front
       cube.querySelector(".front").textContent = rolled;
-      cube.querySelector(".back").textContent = "";
-      cube.querySelector(".left").textContent = "";
-      cube.querySelector(".right").textContent = "";
-      cube.querySelector(".top").textContent = "";
-      cube.querySelector(".bottom").textContent = "";
 
-      // update tracker
-      rolledNumbers += rolled; // append the number as string
-      tracker.textContent = rolledNumbers;
+      // store number + reference
+      rolledNumbers.push({ value: rolled, cube: scene });
+
+      updateTracker();
+
+      // remove cube on click
+      scene.addEventListener("click", () => {
+        rolledNumbers = rolledNumbers.filter(entry => entry.cube !== scene);
+        scene.remove();
+        updateTracker();
+      });
+
+      // highlight tracker on hover
+      scene.addEventListener("mouseenter", () => {
+        const span = tracker.querySelector(`[data-cube-id="${scene.dataset.id}"]`);
+        if (span) span.classList.add("highlight");
+      });
+
+      scene.addEventListener("mouseleave", () => {
+        const span = tracker.querySelector(`[data-cube-id="${scene.dataset.id}"]`);
+        if (span) span.classList.remove("highlight");
+      });
+
     }, 1000); // match animation time
   }, 50);
 
+  // assign unique id for linking cube ↔ tracker
+  scene.dataset.id = Date.now() + Math.random();
+
   this.value = "";
 });
+
+// function to update tracker display
+function updateTracker() {
+  tracker.innerHTML = "";
+  rolledNumbers.forEach(entry => {
+    const span = document.createElement("span");
+    span.textContent = entry.value;
+    span.dataset.cubeId = entry.cube.dataset.id;
+    tracker.appendChild(span);
+  });
+}
