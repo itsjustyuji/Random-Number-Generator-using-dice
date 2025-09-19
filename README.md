@@ -18,10 +18,10 @@ Users can select a dice type and generate random numbers with a clean, neon-insp
 Web Page
 <img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/3a47836f-f247-4d4f-b657-140a68e225e7" />
 
-Amazing hovering and highlisht effect
+Amazing hovering and highlight effect
 <img width="1909" height="900" alt="image" src="https://github.com/user-attachments/assets/590b3e03-27c8-4f3e-a8a1-ca8b76ff51a7" />
 
-Click on any die to delete it 
+Just click on any die to delete it
 <img width="1914" height="886" alt="image" src="https://github.com/user-attachments/assets/7d072dca-b6c7-4bb6-846d-bd584e01daea" />
 
 
