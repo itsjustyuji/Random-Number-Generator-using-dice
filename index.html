@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Number Generator</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <h1>Random Number Generator</h1>
+  <div>
+    <h1>Random Number Generator</h1>
+  </div>
+
+  <div class="dropdown-container">
+    <label for="dice">Choose dice type:</label>
+    <div class="select-wrapper">
+      <select name="dice" id="dice">
+        <option value="" disabled selected>-- Select dice --</option>
+        <option value="d4">d4</option>
+        <option value="d6">d6</option>
+        <option value="d8">d8</option>
+        <option value="d10">d10</option>
+        <option value="d12">d12</option>
+        <option value="d20">d20</option>
+      </select>
     </div>
-        <div>
-                <label for="dice">Choose die:</label>
-                <select name="dice" id="dice">
-                    <option value="d4">d4</option>
-                    <option value="d6">d6</option>
-                    <option value="d8">d8</option>
-                    <option value="d10">d10</option>
-                    <option value="d12">d12</option>
-                    <option value="d20">d20</option>
-                </select>
-            <div id="here"></div>
-            <div>
-                <h2>Rolled Numbers:</h2>
-                <div id="tracker"></div>
-            </div>
-        </div>
-    <script src="index.js"></script>
+  </div>
+
+  <div id="here"></div>
+
+  <div>
+    <h2>Random Number:</h2>
+    <div id="tracker"></div>
+  </div>
+
+  <script src="index.js"></script>
 </body>
 </html>

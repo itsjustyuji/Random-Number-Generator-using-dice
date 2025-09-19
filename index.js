@@ -1,24 +1,23 @@
-const dropdown = document.getElementById('dice');
-const result = document.getElementById('here');
-const tracker = document.getElementById('tracker'); // tracker div
-let rolledNumbers = []; // store rolled numbers as an array instead of string
+const dropdown = document.getElementById("dice");
+const result = document.getElementById("here");
+const tracker = document.getElementById("tracker");
 
-dropdown.addEventListener('change', function () {
+let rolledNumbers = []; // store rolled numbers + cube references
+
+dropdown.addEventListener("change", function () {
   const selectedValue = this.value;
-  const max = parseInt(selectedValue.substring(1)); // e.g. "d20" → 20
+  if (!selectedValue) return;
 
-  // roll number
+  const max = parseInt(selectedValue.substring(1)); // e.g. "d20" → 20
   const rolled = Math.floor(Math.random() * max) + 1;
 
-  // wrapper
+  // create wrapper
   const scene = document.createElement("div");
   scene.classList.add("scene");
 
   // cube
   const cube = document.createElement("div");
   cube.classList.add("cube");
-
-  // initially faces are empty
   cube.innerHTML = `
     <div class="face front"></div>
     <div class="face back"></div>
@@ -27,31 +26,33 @@ dropdown.addEventListener('change', function () {
     <div class="face top"></div>
     <div class="face bottom"></div>
   `;
-
   scene.appendChild(cube);
   result.appendChild(scene);
 
   // reset first
   cube.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
-  // start spin
+  // spin
   setTimeout(() => {
-    const spinX = 720 + (Math.floor(Math.random() * 4) * 90);
-    const spinY = 720 + (Math.floor(Math.random() * 4) * 90);
+    const spinX = 720 + Math.floor(Math.random() * 4) * 90;
+    const spinY = 720 + Math.floor(Math.random() * 4) * 90;
 
     cube.style.transition = "transform 1s ease-out";
     cube.style.transform = `rotateX(${spinX}deg) rotateY(${spinY}deg)`;
 
-    // after animation ends → snap to front view & show result
+    // after animation ends
     setTimeout(() => {
-      cube.style.transition = "none"; // reset transition
-      cube.style.transform = `rotateX(0deg) rotateY(0deg)`; // ensure front face
+      cube.style.transition = "none";
+      cube.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
-      // place rolled number only on front
+      // show rolled number on front face
       cube.querySelector(".front").textContent = rolled;
 
-      // store number + reference
-      rolledNumbers.push({ value: rolled, cube: scene });
+      // assign unique id for linking cube ↔ tracker
+      scene.dataset.id = Date.now() + Math.random();
+
+      // save entry
+      rolledNumbers.push({ value: rolled, cube: scene, id: scene.dataset.id });
 
       updateTracker();
 
@@ -72,23 +73,22 @@ dropdown.addEventListener('change', function () {
         const span = tracker.querySelector(`[data-cube-id="${scene.dataset.id}"]`);
         if (span) span.classList.remove("highlight");
       });
-
-    }, 1000); // match animation time
+    }, 1000); // match animation
   }, 50);
 
-  // assign unique id for linking cube ↔ tracker
-  scene.dataset.id = Date.now() + Math.random();
-
+  // reset dropdown to placeholder
   this.value = "";
 });
 
-// function to update tracker display
 function updateTracker() {
-  tracker.innerHTML = "";
-  rolledNumbers.forEach(entry => {
-    const span = document.createElement("span");
-    span.textContent = entry.value;
-    span.dataset.cubeId = entry.cube.dataset.id;
-    tracker.appendChild(span);
-  });
+  if (rolledNumbers.length === 0) {
+    tracker.innerHTML = ""; // clear when no rolls
+    return;
+  }
+
+  tracker.innerHTML = rolledNumbers
+    .map(entry => {
+      return `<span data-cube-id="${entry.id}">${entry.value}</span>`;
+    })
+    .join("");
 }
