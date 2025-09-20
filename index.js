@@ -2,13 +2,13 @@ const dropdown = document.getElementById("dice");
 const result = document.getElementById("here");
 const tracker = document.getElementById("tracker");
 
-let rolledNumbers = []; // store rolled numbers + cube references
+let rolledNumbers = []; 
 
 dropdown.addEventListener("change", function () {
   const selectedValue = this.value;
   if (!selectedValue) return;
 
-  const max = parseInt(selectedValue.substring(1)); // e.g. "d20" → 20
+  const max = parseInt(selectedValue.substring(1)); 
   const rolled = Math.floor(Math.random() * max) + 1;
 
   // create wrapper
@@ -29,10 +29,8 @@ dropdown.addEventListener("change", function () {
   scene.appendChild(cube);
   result.appendChild(scene);
 
-  // reset first
   cube.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
-  // spin
   setTimeout(() => {
     const spinX = 720 + Math.floor(Math.random() * 4) * 90;
     const spinY = 720 + Math.floor(Math.random() * 4) * 90;
@@ -40,30 +38,24 @@ dropdown.addEventListener("change", function () {
     cube.style.transition = "transform 1s ease-out";
     cube.style.transform = `rotateX(${spinX}deg) rotateY(${spinY}deg)`;
 
-    // after animation ends
     setTimeout(() => {
       cube.style.transition = "none";
       cube.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
-      // show rolled number on front face
       cube.querySelector(".front").textContent = rolled;
 
-      // assign unique id for linking cube ↔ tracker
       scene.dataset.id = Date.now() + Math.random();
 
-      // save entry
       rolledNumbers.push({ value: rolled, cube: scene, id: scene.dataset.id });
 
       updateTracker();
 
-      // remove cube on click
       scene.addEventListener("click", () => {
         rolledNumbers = rolledNumbers.filter(entry => entry.cube !== scene);
         scene.remove();
         updateTracker();
       });
 
-      // highlight tracker on hover
       scene.addEventListener("mouseenter", () => {
         const span = tracker.querySelector(`[data-cube-id="${scene.dataset.id}"]`);
         if (span) span.classList.add("highlight");
@@ -73,16 +65,15 @@ dropdown.addEventListener("change", function () {
         const span = tracker.querySelector(`[data-cube-id="${scene.dataset.id}"]`);
         if (span) span.classList.remove("highlight");
       });
-    }, 1000); // match animation
+    }, 1000); 
   }, 50);
 
-  // reset dropdown to placeholder
   this.value = "";
 });
 
 function updateTracker() {
   if (rolledNumbers.length === 0) {
-    tracker.innerHTML = ""; // clear when no rolls
+    tracker.innerHTML = ""; 
     return;
   }
 
